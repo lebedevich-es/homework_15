@@ -50,7 +50,7 @@ public class OurGamesPageTest extends TestBase {
     })
     @ParameterizedTest(name = "By clicking on the {0} game card opens correct page")
     @Tag("games")
-    @DisplayName("The correct page opens by clicking items in the 'Turbo Games' section")
+    @DisplayName("'Turbo Games' section: ")
     void turboGamesSectionTest(String game) {
         step("Open the 'Our Games' page", () -> {
             open("/games");

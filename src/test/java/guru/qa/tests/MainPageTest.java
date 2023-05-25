@@ -13,12 +13,6 @@ public class MainPageTest extends TestBase {
     private final static String TITLE_TEXT = "Innovative Casino Games";
     private final static String OUR_GAMES_TITLE = "Our Games";
 
-    @BeforeAll
-    static void declineCookies() {
-        open("/welcome");
-        $(".btn-light.align-self-stretch").click();
-    }
-
     @Test
     @Tag("main")
     @DisplayName("The title on the 'Main' page is correct")
@@ -41,8 +35,8 @@ public class MainPageTest extends TestBase {
             "Contact, Contact Us"
     })
     @Tag("main")
-    @DisplayName("The correct page opens by clicking items in the navigation menu")
-    @ParameterizedTest(name = "For item {0} opens correct page: {1}")
+    @DisplayName("Items in the navigation menu: ")
+    @ParameterizedTest(name = "Clicking item {0} in the navigation menu opens correct page: {1}")
     void navigationMenuTest(String item, String expectedResult) {
         step("Open the Main page", () -> {
             open("/welcome");
