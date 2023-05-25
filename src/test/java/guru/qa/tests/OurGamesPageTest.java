@@ -1,6 +1,6 @@
 package guru.qa.tests;
 
-import com.codeborne.selenide.SelenideElement;
+import guru.qa.pages.OurGamesPage;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -8,14 +8,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.open;
 import static io.qameta.allure.Allure.step;
 
+@Tag("games")
 public class OurGamesPageTest extends TestBase {
 
-    private final static String TURBO_GAMES_TITLE = "Turbo Games";
-    private final static String POKER_AND_SKILL_GAMES_TITLE = "Poker & Skill Games";
+    OurGamesPage ourGamesPage = new OurGamesPage();
 
     @BeforeAll
     static void declineCookies() {
@@ -24,16 +24,14 @@ public class OurGamesPageTest extends TestBase {
     }
 
     @Test
-    @Tag("games")
     @DisplayName("'Turbo Games' and 'Poker & Skill Games' section are present on the 'Our Games' page")
     void gameSectionsTitleTest() {
         step("Open the Our Games page", () -> {
-            open("/games");
+            ourGamesPage.openPage();
         });
 
         step("Check games sections", () -> {
-            $("#turbo").shouldHave(text(TURBO_GAMES_TITLE));
-            $("#p2p").shouldHave(text(POKER_AND_SKILL_GAMES_TITLE));
+            ourGamesPage.checkGameSectionTitles();
         });
     }
 
@@ -49,42 +47,38 @@ public class OurGamesPageTest extends TestBase {
             "HotLine"
     })
     @ParameterizedTest(name = "By clicking on the {0} game card opens correct page")
-    @Tag("games")
-    @DisplayName("'Turbo Games' section: ")
+    @DisplayName("Check 'Turbo Games' section: ")
     void turboGamesSectionTest(String game) {
         step("Open the 'Our Games' page", () -> {
-            open("/games");
+            ourGamesPage.openPage();
         });
 
         step("Click on the game card", () -> {
-            $$("app-game-card").findBy(text(game)).click();
+            ourGamesPage.clickByGameCard(game);
         });
 
         step("Check that correct page opens", () -> {
-            $("[class='display']").shouldHave(text(game));
+            ourGamesPage.checkTitleOfPage(game);
         });
     }
 
     @Test
-    @Tag("games")
     @DisplayName("The 'Responsible Gaming' modal opens by clicking 'Demo' button")
     void openingWarningModalTest() {
-        SelenideElement card = $$("app-game-card").findBy(text("Aviator"));
-
         step("Open the 'Our Games' page", () -> {
-            open("/games");
+            ourGamesPage.openPage();
         });
 
         step("Hover over the card", () -> {
-            card.hover();
+            ourGamesPage.hoverOverGameCard();
         });
 
         step("Click on the 'Demo' button for card", () -> {
-            card.$(".demo").click();
+            ourGamesPage.clickByDemoButton();
         });
 
         step("Check that 'Responsible Gaming' modal opens", () -> {
-            $(".modal-title").shouldHave(text("Responsible Gaming"));
+            ourGamesPage.checkResponsibleGamingModalTitle();
         });
     }
 }

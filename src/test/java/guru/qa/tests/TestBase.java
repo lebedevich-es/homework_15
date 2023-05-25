@@ -32,7 +32,6 @@ public class TestBase {
         Configuration.browser = browserName;
         Configuration.browserSize = browserSize;
         Configuration.browserVersion = browserVersion;
-        //Configuration.remote = "https://user1:1234@selenoid.autotests.cloud/wd/hub";
     }
 
     @AfterEach

@@ -1,28 +1,31 @@
 package guru.qa.tests;
 
-import org.junit.jupiter.api.*;
+import guru.qa.pages.MainPage;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selenide.*;
 import static io.qameta.allure.Allure.step;
 
+@Tag("main")
 public class MainPageTest extends TestBase {
 
-    private final static String TITLE_TEXT = "Innovative Casino Games";
-    private final static String OUR_GAMES_TITLE = "Our Games";
+    MainPage mainPage = new MainPage();
+    private final static String
+            TITLE_TEXT = "Innovative Casino Games",
+            OUR_GAMES_TITLE = "Our Games";
 
     @Test
-    @Tag("main")
     @DisplayName("The title on the 'Main' page is correct")
     void mainPageTitleTest() {
         step("Open the Main page", () -> {
-            open("/welcome");
+            mainPage.openPage();
         });
 
         step("Check if this text exists:" + TITLE_TEXT, () -> {
-            $("body h1.title").shouldHave(text(TITLE_TEXT));
+            mainPage.checkPrimaryTitle(TITLE_TEXT);
         });
     }
 
@@ -34,34 +37,32 @@ public class MainPageTest extends TestBase {
             "Vacancies, Open Vacancies",
             "Contact, Contact Us"
     })
-    @Tag("main")
-    @DisplayName("Items in the navigation menu: ")
+    @DisplayName("Check items in the navigation menu: ")
     @ParameterizedTest(name = "Clicking item {0} in the navigation menu opens correct page: {1}")
     void navigationMenuTest(String item, String expectedResult) {
         step("Open the Main page", () -> {
-            open("/welcome");
+            mainPage.openPage();
         });
 
         step("Check items in the navigation menu", () -> {
-            $$("li[class='nav-item']").findBy(text(item)).click();
-            $("[class='display']").shouldHave(text(expectedResult));
+            mainPage.clickByItemInNavigationMenu(item)
+                    .checkTitleOfPage(expectedResult);
         });
     }
 
     @Test
-    @Tag("main")
     @DisplayName("'Our Games' page opens by clicking the 'Explore our Games' button")
     void openOurGamesPageByClickingPrimaryButtonTest() {
         step("Open the Main page", () -> {
-            open("/welcome");
+            mainPage.openPage();
         });
 
         step("Click on the 'Explore our Games' button", () -> {
-            $("a.btn-primary").click();
+            mainPage.clickPrimaryButton();
         });
 
         step("Check that 'Our Games' page opens", () -> {
-            $("[class='display']").shouldHave(text(OUR_GAMES_TITLE));
+            mainPage.checkTitleOfPage(OUR_GAMES_TITLE);
         });
     }
 }
