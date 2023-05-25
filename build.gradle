@@ -1,0 +1,58 @@
+plugins {
+    id 'java'
+    id 'io.qameta.allure' version "2.11.2"
+}
+
+group 'guru.qa'
+version '1.0-SNAPSHOT'
+
+allure {
+    report {
+        version.set("2.21.0") //версия Allure Report (https://github.com/allure-framework/allure2)
+    }
+    adapter {
+        aspectjWeaver.set(true) // обработка аннотации @Step
+        frameworks {
+            junit5 {
+                adapterVersion.set("2.21.0") //версия Allure JUnit5 (https://github.com/allure-framework/allure-java)
+            }
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation(
+            'com.codeborne:selenide:6.12.3',
+            'org.junit.jupiter:junit-jupiter:5.9.2',
+            'org.slf4j:slf4j-simple:2.0.5',
+            'io.qameta.allure:allure-selenide:2.21.0'
+    )
+}
+
+tasks.withType(Test) {
+    systemProperties(System.getProperties())
+    useJUnitPlatform()
+
+    testLogging {
+        lifecycle {
+            events "started", "skipped", "failed", "standard_error", "standard_out"
+            exceptionFormat "short"
+        }
+    }
+}
+
+task main_test(type: Test) {
+    useJUnitPlatform {
+        includeTags "main"
+    }
+}
+
+task games_test(type: Test) {
+    useJUnitPlatform {
+        includeTags "games"
+    }
+}
