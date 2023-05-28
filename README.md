@@ -10,7 +10,6 @@
 - [Allure report](#-allure-report)
 - [Allure TestOps Integration](#-allure-testops-integration)
 - [Jira Integration](#-jira-integration)
-- [Slack notifications](#-slack-notifications)
 - [Telegram notifications](#-telegram-notifications)
 - [Video of an example of running a test in Selenoid](#-video-of-an-example-of-running-a-test-in-selenoid)
 
